@@ -1,5 +1,6 @@
 import { Star, MapPin } from 'lucide-react'
 import type { ProviderRow } from '@/lib/supabase/queries'
+import { VerifiedBadge } from './verified-badge'
 
 export function ProviderCard({ provider, onChoose }: { provider: ProviderRow; onChoose: () => void }) {
   return (
@@ -10,6 +11,7 @@ export function ProviderCard({ provider, onChoose }: { provider: ProviderRow; on
       </div>
       <h3>{provider.name}</h3>
       <p className="provider-spec">{provider.specialization}</p>
+      <VerifiedBadge membershipNumber={provider.membership_number} />
       <div className="provider-meta">
         <span><Star size={13} /> {provider.rating} <small>({provider.reviews_count})</small></span>
         <span><MapPin size={13} /> {provider.location}</span>

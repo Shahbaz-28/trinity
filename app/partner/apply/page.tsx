@@ -27,6 +27,7 @@ export default async function PartnerApplyPage() {
             <dl>
               <div><dt>Name</dt><dd>{application.name}</dd></div>
               <div><dt>Category</dt><dd>{application.category}</dd></div>
+              <div><dt>Membership No.</dt><dd>{application.membership_number ?? '—'}</dd></div>
               <div><dt>Specialization</dt><dd>{application.specialization}</dd></div>
               <div><dt>Experience</dt><dd>{application.experience_years}+ years</dd></div>
               <div><dt>Location</dt><dd>{application.location}</dd></div>

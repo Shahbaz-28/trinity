@@ -11,6 +11,7 @@ export function ListingForm({ application }: { application: ProviderRow }) {
     <form action={formAction} className="profile-form">
       <label><span>Name</span><input value={application.name} disabled title="Contact support to change your name." /></label>
       <label><span>Category</span><input value={application.category} disabled title="Contact support to change your category." /></label>
+      <label><span>Membership / Enrollment Number</span><input value={application.membership_number ?? '—'} disabled title="Contact support to change your membership number." /></label>
       <label><span>Specialization</span><input name="specialization" defaultValue={application.specialization} required /></label>
       <label><span>Years of experience</span><input name="experienceYears" type="number" min={0} defaultValue={application.experience_years} required /></label>
       <label><span>Location</span><input name="location" defaultValue={application.location} required /></label>

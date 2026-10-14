@@ -24,7 +24,10 @@ export default async function PartnerAdminPage() {
                 <span className="provider-avatar">{application.avatar_initial}</span>
                 <span className="admin-info">
                   <strong>{application.name}</strong>
-                  <small>{application.category} · {application.specialization} · {application.experience_years}+ yrs · {application.location}</small>
+                  <small>
+                    {application.category} · {application.specialization} · {application.experience_years}+ yrs · {application.location}
+                    {application.membership_number && <> · <strong>{application.membership_number}</strong></>}
+                  </small>
                 </span>
                 <span className={application.status === 'approved' ? 'status-pill status-green' : application.status === 'rejected' ? 'status-pill status-muted' : 'status-pill status-gold'}>
                   <span className="status-dot" />

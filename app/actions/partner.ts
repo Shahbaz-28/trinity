@@ -18,9 +18,13 @@ export async function submitApplication(_prevState: ApplyFormState, formData: Fo
   const specialization = String(formData.get('specialization') ?? '').trim()
   const experienceYears = Number(formData.get('experienceYears'))
   const location = String(formData.get('location') ?? '').trim()
+  const membershipNumber = String(formData.get('membershipNumber') ?? '').trim()
 
   if (!specialization || !location || !Number.isFinite(experienceYears) || experienceYears < 0) {
     return { error: 'Please fill in every field with a valid value.' }
+  }
+  if (category !== 'Accountant' && !membershipNumber) {
+    return { error: 'Please provide your professional membership/enrollment number.' }
   }
 
   const { data: profile, error: profileError } = await supabase.from('profiles').select('full_name, email').eq('id', user.id).single()
@@ -36,6 +40,7 @@ export async function submitApplication(_prevState: ApplyFormState, formData: Fo
     specialization,
     experience_years: experienceYears,
     location,
+    membership_number: membershipNumber || null,
     avatar_initial: profile.full_name[0]?.toUpperCase() ?? 'P',
     status: 'pending',
   })

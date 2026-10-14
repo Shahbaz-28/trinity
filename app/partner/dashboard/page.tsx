@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight, ChevronRight, Star, User as UserIcon } from 'lucide-react'
 import { StatusPill } from '@/components/shared'
+import { VerifiedBadge } from '@/components/verified-badge'
 import { getMyClientEngagements, getMyProviderApplication } from '@/lib/supabase/queries'
 import type { ActiveServiceWithClient } from '@/lib/supabase/queries'
 
@@ -65,6 +66,7 @@ export default async function ProviderOverviewPage() {
           <div className="panel-heading">
             <div><p className="eyebrow">Your listing</p><h2>How clients see you</h2></div>
           </div>
+          <div style={{ marginBottom: 12 }}><VerifiedBadge membershipNumber={application!.membership_number} /></div>
           <div className="tip-card">
             <Star size={16} />
             <span><strong>{application!.specialization}</strong><small>{application!.experience_years}+ years experience · {application!.location}</small></span>

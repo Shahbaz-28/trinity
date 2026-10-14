@@ -9,7 +9,7 @@ import { Button, Logo } from './shared'
 
 const navItems = [
   { href: '/', label: 'Home' },
-  { href: '/explore', label: 'Explore' },
+  { href: '/providers', label: 'Experts' },
   { href: '/about', label: 'About' },
   { href: '/partner', label: 'For Professionals' },
 ]

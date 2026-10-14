@@ -1,5 +1,6 @@
 import { X, Check } from 'lucide-react'
 import type { ProviderRow } from '@/lib/supabase/queries'
+import { VerifiedBadge } from './verified-badge'
 
 export function ProviderConfirm({ provider, onCancel, onConfirm, pending }: { provider: ProviderRow; onCancel: () => void; onConfirm: () => void; pending: boolean }) {
   return (
@@ -8,6 +9,7 @@ export function ProviderConfirm({ provider, onCancel, onConfirm, pending }: { pr
         <button className="modal-close" aria-label="Close" onClick={onCancel}><X size={16} /></button>
         <p className="eyebrow">Confirm your choice</p>
         <h2>Work with {provider.name}?</h2>
+        <div style={{ margin: '10px 0' }}><VerifiedBadge membershipNumber={provider.membership_number} /></div>
         <p className="modal-text">{provider.name} ({provider.category}) specializes in {provider.specialization}. This adds them as your active service provider on your dashboard.</p>
         <div className="modal-actions">
           <button className="button button-secondary" onClick={onCancel} disabled={pending}>Cancel</button>

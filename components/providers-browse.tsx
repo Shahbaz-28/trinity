@@ -10,8 +10,8 @@ import { ProviderConfirm } from './provider-confirm'
 
 const categories: (ProviderCategory | 'All')[] = ['All', 'CA', 'Advocate', 'Company Secretary', 'Accountant']
 
-export function ProvidersBrowse({ providers }: { providers: ProviderRow[] }) {
-  const [category, setCategory] = useState<ProviderCategory | 'All'>('All')
+export function ProvidersBrowse({ providers, initialCategory = 'All' }: { providers: ProviderRow[]; initialCategory?: ProviderCategory | 'All' }) {
+  const [category, setCategory] = useState<ProviderCategory | 'All'>(initialCategory)
   const [query, setQuery] = useState('')
   const [picked, setPicked] = useState<ProviderRow | null>(null)
   const [pending, startTransition] = useTransition()

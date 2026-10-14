@@ -4,7 +4,12 @@ import { NextResponse, type NextRequest } from 'next/server'
 // Routes that require a signed-in user. Role-specific checks (e.g. admin-only
 // for /partner/admin) happen server-side in each page/layout, not here —
 // this is the "optimistic" check, not the source of truth.
-const protectedPrefixes = ['/dashboard', '/providers', '/partner/apply', '/partner/admin', '/partner/dashboard']
+//
+// /providers is intentionally NOT in this list — anyone can browse the
+// professional roster without an account (good for a public pitch demo);
+// actually choosing a provider still requires sign-in, enforced inside the
+// chooseProvider Server Action itself.
+const protectedPrefixes = ['/dashboard', '/partner/apply', '/partner/admin', '/partner/dashboard']
 
 export default async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })

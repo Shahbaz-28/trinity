@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { StatusPill } from '@/components/shared'
+import { VerifiedBadge } from '@/components/verified-badge'
 import { EngagementTimeline } from '@/components/engagement-timeline'
 import { DocumentsList } from '@/components/documents-list'
 import { getEngagementForClient, getEngagementUpdates, getEngagementDocuments, type ActiveServiceWithProvider } from '@/lib/supabase/queries'
@@ -24,6 +25,7 @@ export default async function ClientEngagementDetailPage({ params }: { params: P
           <p className="eyebrow">Engagement</p>
           <h1>{engagement.provider_profiles.name}</h1>
           <p>{engagement.provider_profiles.category} · {engagement.provider_profiles.specialization}</p>
+          <div style={{ marginTop: 10 }}><VerifiedBadge membershipNumber={engagement.provider_profiles.membership_number} /></div>
         </div>
         <StatusPill tone={toneForStatus[engagement.status]}>{engagement.status}</StatusPill>
       </div>
