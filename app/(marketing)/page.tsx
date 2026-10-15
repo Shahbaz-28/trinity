@@ -5,6 +5,7 @@ import { GetStartedButton } from '@/components/get-started-button'
 import { ExpertsCounter } from '@/components/experts-counter'
 import { DashboardPreview } from '@/components/dashboard-preview'
 import { ExpertShowcaseCard } from '@/components/expert-showcase-card'
+import { ProblemPicker } from '@/components/problem-picker'
 
 // The most-reviewed provider from each distinct category — ordered by
 // reviews_count first (not rating) because every new listing defaults to
@@ -81,6 +82,11 @@ export default async function HomePage() {
     </div></section>
 
     <section className="section section-tight-top"><div className="container">
+      <div className="section-heading"><div><p className="eyebrow">Tell us what's going on</p><h2>What do you need help with?</h2></div><p>Pick what matches your situation — we'll show you the right experts.</p></div>
+      <ProblemPicker />
+    </div></section>
+
+    <section className="section"><div className="container">
       <div className="section-heading"><div><p className="eyebrow">Why Trinity</p><h2>Not just a directory.</h2></div><p>Built to actually solve the trust problem, not just list names.</p></div>
       <div className="service-grid">
         {whyTrinity.map(({ icon: Icon, title, text }) => (

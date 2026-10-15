@@ -1,6 +1,7 @@
 import { Check, RotateCcw, ShieldAlert, X } from 'lucide-react'
 import { getAllProviderApplications } from '@/lib/supabase/queries'
 import { setApplicationStatus } from '@/app/actions/partner'
+import { problemTagLabels, type ProblemTag } from '@/lib/problem-tags'
 
 export default async function PartnerAdminPage() {
   const applications = await getAllProviderApplications()
@@ -28,6 +29,9 @@ export default async function PartnerAdminPage() {
                     {application.category} · {application.specialization} · {application.experience_years}+ yrs · {application.location}
                     {application.membership_number && <> · <strong>{application.membership_number}</strong></>}
                   </small>
+                  {application.tags.length > 0 && (
+                    <small>Handles: {application.tags.map((tag) => problemTagLabels[tag as ProblemTag] ?? tag).join(', ')}</small>
+                  )}
                 </span>
                 <span className={application.status === 'approved' ? 'status-pill status-green' : application.status === 'rejected' ? 'status-pill status-muted' : 'status-pill status-gold'}>
                   <span className="status-dot" />

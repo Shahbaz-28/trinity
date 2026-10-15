@@ -4,6 +4,7 @@ import { useActionState, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { submitApplication } from '@/app/actions/partner'
 import type { ProviderCategory } from '@/lib/types'
+import { problemTags } from '@/lib/problem-tags'
 
 const categories: ProviderCategory[] = ['CA', 'Advocate', 'Company Secretary', 'Accountant']
 
@@ -24,6 +25,11 @@ const membershipPlaceholder: Record<ProviderCategory, string> = {
 export function PartnerApplicationForm() {
   const [state, formAction, pending] = useActionState(submitApplication, undefined)
   const [category, setCategory] = useState<ProviderCategory>('CA')
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags((current) => (current.includes(tag) ? current.filter((item) => item !== tag) : [...current, tag]))
+  }
 
   return (
     <main className="page-shell partner-page">
@@ -47,6 +53,17 @@ export function PartnerApplicationForm() {
             <label>
               <span>{membershipLabel[category]}</span>
               <input name="membershipNumber" placeholder={membershipPlaceholder[category]} required={category !== 'Accountant'} />
+            </label>
+            <label>
+              <span>What kind of work do you handle? (select all that apply)</span>
+              <div className="tag-checkbox-grid">
+                {problemTags.map(({ tag, label }) => (
+                  <label key={tag} className={selectedTags.includes(tag) ? 'tag-checkbox active' : 'tag-checkbox'}>
+                    <input type="checkbox" name="tags" value={tag} checked={selectedTags.includes(tag)} onChange={() => toggleTag(tag)} />
+                    {label}
+                  </label>
+                ))}
+              </div>
             </label>
             {state?.error && <p className="signin-error">{state.error}</p>}
             <button type="submit" className="button button-primary signin-submit" disabled={pending}>{pending ? 'Submitting…' : 'Submit Application'} <ArrowRight size={16} /></button>

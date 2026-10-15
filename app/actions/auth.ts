@@ -7,10 +7,25 @@ export type AuthFormState = { error: string } | undefined
 
 // Where to land right after sign-in/sign-up — driven by the explicit
 // Client / Professional choice on the sign-in form, not guessed from
-// account history. "Professional" always goes through /partner/apply,
-// which itself shows the application form, the pending/rejected status,
-// or redirects on to /partner/dashboard once approved.
-function redirectByIntent(formData: FormData): never {
+// account history. "Professional" goes through /partner/apply, which
+// itself shows the application form, the pending/rejected status, or
+// redirects on to /partner/dashboard once approved. Admins always land
+// on /partner/admin — the review queue is their whole job here, not a
+// client dashboard with an extra link bolted on — regardless of which
+// intent they picked at sign-in.
+async function redirectByIntent(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  formData: FormData,
+): Promise<never> {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (user) {
+    const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+    if (profile?.role === 'admin') redirect('/partner/admin')
+  }
+
   const intent = formData.get('intent')
   redirect(intent === 'professional' ? '/partner/apply' : '/dashboard')
 }
@@ -46,7 +61,7 @@ export async function signUp(_prevState: AuthFormState, formData: FormData): Pro
     await supabase.from('profiles').update({ consent_given_at: new Date().toISOString() }).eq('id', data.user.id)
   }
 
-  redirectByIntent(formData)
+  await redirectByIntent(supabase, formData)
 }
 
 export async function signIn(_prevState: AuthFormState, formData: FormData): Promise<AuthFormState> {
@@ -64,7 +79,7 @@ export async function signIn(_prevState: AuthFormState, formData: FormData): Pro
     return { error: error.message }
   }
 
-  redirectByIntent(formData)
+  await redirectByIntent(supabase, formData)
 }
 
 export async function signOut() {

@@ -19,7 +19,10 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   if (!profile) redirect('/signin')
 
   const activeServices = await getMyActiveServices()
-  if (activeServices.length === 0) redirect('/providers')
+  // Admins land here to reach the Admin link below — never bounce them into
+  // the client "pick a provider" flow just because they have no engagements
+  // of their own.
+  if (profile.role !== 'admin' && activeServices.length === 0) redirect('/providers')
 
   const navItems: ShellNavItem[] =
     profile.role === 'admin' ? [...baseNavItems, { href: '/partner/admin', label: 'Admin', icon: 'ShieldCheck' }] : baseNavItems

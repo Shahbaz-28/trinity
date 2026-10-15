@@ -4,6 +4,9 @@ import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import type { ProviderCategory, ProviderStatus } from '@/lib/types'
+import { problemTags, type ProblemTag } from '@/lib/problem-tags'
+
+const validTagSlugs = new Set<string>(problemTags.map((item) => item.tag))
 
 export type ApplyFormState = { error: string } | undefined
 
@@ -19,6 +22,7 @@ export async function submitApplication(_prevState: ApplyFormState, formData: Fo
   const experienceYears = Number(formData.get('experienceYears'))
   const location = String(formData.get('location') ?? '').trim()
   const membershipNumber = String(formData.get('membershipNumber') ?? '').trim()
+  const tags = formData.getAll('tags').map(String).filter((tag): tag is ProblemTag => validTagSlugs.has(tag))
 
   if (!specialization || !location || !Number.isFinite(experienceYears) || experienceYears < 0) {
     return { error: 'Please fill in every field with a valid value.' }
@@ -43,6 +47,7 @@ export async function submitApplication(_prevState: ApplyFormState, formData: Fo
     membership_number: membershipNumber || null,
     avatar_initial: profile.full_name[0]?.toUpperCase() ?? 'P',
     status: 'pending',
+    tags,
   })
 
   if (error) {
